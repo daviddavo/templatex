@@ -1,0 +1,6 @@
+build/
+venv/
+*.csv
+*.pyc
+__pycache__
+prueba.json
