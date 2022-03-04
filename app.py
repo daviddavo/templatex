@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 from pathlib import Path
 from re import TEMPLATE
 from tempfile import TemporaryDirectory
+import sys
 import jinja2
 import time
 import subprocess
@@ -37,6 +38,8 @@ def create_app():
 
     @app.route('/pdf/<string:tname>', methods=['POST'])
     def pdf(tname: str): 
+        if tname.endswith('.pdf'):
+            tname = tname[:-4]
         if not tname.endswith('.tex'):
             tname += '.tex'
 
@@ -46,8 +49,12 @@ def create_app():
                 with open(tpath, 'w') as f:
                     f.write(gen_latex(tname, request.json))
                 
-                out = subprocess.check_call([XELATEX_BIN, '-interaction=batchmode', tname], cwd=d)
-                out = subprocess.check_call([XELATEX_BIN, '-interaction=batchmode', tname], cwd=d)
+                try:
+                    out = subprocess.check_output([XELATEX_BIN, '-interaction=batchmode', tname], cwd=d)
+                    out = subprocess.check_output([XELATEX_BIN, '-interaction=batchmode', tname], cwd=d)
+
+                except subprocess.CalledProcessError as e:
+                    return send_file(tpath.with_suffix('.log'))
 
                 return send_file(tpath.with_suffix('.pdf'))
         except jinja2.exceptions.TemplateNotFound:
