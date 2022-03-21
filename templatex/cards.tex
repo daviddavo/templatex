@@ -1,5 +1,5 @@
 \documentclass[14pt]{extarticle}
-\usepackage[a6paper, landscape]{geometry}
+\usepackage[papersize={100mm, 150mm}, landscape]{geometry}
 \usepackage{layouts}
 \usepackage{calc}
 \usepackage{xcolor}
@@ -44,7 +44,9 @@
     \pgfmathsetmacro{\frh}{13}
     \pgfmathsetmacro{\nlh}{6}
     \pgfmathsetmacro{\lmargin}{10}
-    \pgfmathsetmacro{\commentwidth}{148-\lmargin*2}
+    % TODO: Use \pagewidth or \textwidth instead
+    \pgfmathsetmacro{\commentwidth}{150-\lmargin*2}
+    % \pgfmathsetmacro{\commentwidth}{148-\lmargin*2}
     \pgfmathsetmacro{\fromwidth}{0.5*\commentwidth}
     \pgfmathsetmacro{\towidth}{\commentwidth}
 
